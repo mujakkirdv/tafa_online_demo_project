@@ -11,10 +11,10 @@ import matplotlib.pyplot as plt
 
 
 # ✅ Excel file paths
-sales_data = "data/sales_register.xlsx"
-cashbook_data = "data/cashbook.xlsx"
-bankbook_data = "data/bankbook.xlsx"
-purchase_data = "data/purchase_sales_demo.xlsx"
+sales_data = "sales_register.xlsx"
+cashbook_data = "cashbook.xlsx"
+bankbook_data = "bankbook.xlsx"
+purchase_data = "purchase_sales_demo.xlsx"
 
 # Page configuration
 st.set_page_config(
@@ -999,4 +999,5 @@ st.markdown("Made with ❤️ by [Mujakkir Ahmad](https://webmujakkir.streamlit.
 st.markdown("For more information, visit [GitHub Repository](https://github.com/mujakkirdv)")
 st.markdown("Follow me on [LinkedIn](https://www.linkedin.com/in/mujakkirdv/)")
 st.markdown("© August 2025 TAFA Version: 1.1.0. All rights reserved.")
+
 st.markdown("---")
