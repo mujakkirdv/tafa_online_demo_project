@@ -65,7 +65,7 @@ page = st.sidebar.radio(
     )
 )
 
-# ✅ Example: Show preview depending on menu
+#Show preview depending on menu
 if page == "🏠 Home":
     st.title("🏠 Girls Cooperative Store")
     st.header("Finance and Accounting Dashboard")
@@ -96,13 +96,38 @@ if page == "🏠 Home":
 
     col4, col5, col6 = st.columns(3)
     col4.metric("💵 Total Income", f"{df_cash['Cash_In'].sum():,.2f}") 
-    col5.metric("📉 Total Expense", f"{(df_cash['Cash_In'][df_cash['Type']=='Expense']).sum():,.2f}" if "Type" in df_cash else "Need 'Type' column")
+    col5.metric("📉 Total Expense", f"{(df_cash['Cash_In'][df_cash['Payment_category']=='Expense']).sum():,.2f}" if "Payment_category" in df_cash else "Need 'Payment_category' column")
     col6.metric("🏦 Bank Deposit", f"{df_bank['Deposit_Amount'].sum():,.2f}" if "Deposit_Amount" in df_bank else "Need 'Deposit_Amount' column")
 
     col7, col8 = st.columns(2)
     col7.metric("🏦 Bank Withdrawal", f"{df_bank['Withdrawal_Amount'].sum():,.2f}" if "Withdrawal_Amount" in df_bank else "Need 'Withdrawal_Amount' column")
     col8.metric("📱 Mobile Banking", f"{sales_filtered.loc[sales_filtered['payment_method'].isin(['bKash','Nagad','Rocket']), 'total_amount'].sum():,.2f}")
 
+    # --- Sales Trend Chart ---
+    st.subheader("📈 Sales Trend")
+    sales_trend = sales_filtered.groupby('date')['total_amount'].sum().reset_index()
+    st.line_chart(sales_trend.rename(columns={'date':'index'}).set_index('index'))
+
+    # --- Payment Method Distribution ---
+    st.subheader("💳 Payment Method Distribution")
+    payment_counts = sales_filtered['payment_method'].value_counts()
+    st.bar_chart(payment_counts)
+
+    # --- Top 5 Products ---
+    if 'product_name' in sales_filtered:
+        st.subheader("🏆 Top 5 Products Sold")
+        top_products = sales_filtered.groupby('product_name')['total_amount'].sum().sort_values(ascending=False).head(5)
+        st.dataframe(top_products)
+
+    # --- Download Filtered Sales Data ---
+    st.subheader("📥 Download Filtered Sales Data")
+    csv = sales_filtered.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download CSV",
+        data=csv,
+        file_name='filtered_sales.csv',
+        mime='text/csv'
+    )
 
 elif page == "📍 Dashboard":
     st.title("📍 Dashboard Overview")
@@ -1027,3 +1052,4 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
