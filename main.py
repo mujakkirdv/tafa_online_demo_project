@@ -1023,7 +1023,7 @@ elif page == "📚 About":
 st.markdown(
     """
     <p style='text-align:center; font-size:14px; color:gray;'>
-        Powered by Mujakkir Ahmad | Data & Analytics
+        Developed by : Mujakkir Ahmad | Version 2.0.0 | Last Updated: August 2025
     </p>
     """,
     unsafe_allow_html=True
@@ -1052,4 +1052,5 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
