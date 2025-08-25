@@ -18,7 +18,7 @@ purchase_data = "purchase_sales_demo.xlsx"
 
 # Page configuration
 st.set_page_config(
-    page_title="TAFA Women's Cooperative",
+    page_title="Cooperative Store",
     page_icon="📊",
     layout="wide"
 )
@@ -67,13 +67,13 @@ page = st.sidebar.radio(
 
 # ✅ Example: Show preview depending on menu
 if page == "🏠 Home":
-    st.title("🏠 TAFA Women's Cooperative")
-    st.header("Tafa Finance and Accounting Dashboard")
+    st.title("🏠 Girls Cooperative Store")
+    st.header("Finance and Accounting Dashboard")
 
     # --- Company Info ---
     st.subheader("🏢 Company Information")
     st.write("""
-    **Company Name:** TAFA Women's Cooperative  
+    **Company Name:** Girls Cooperative Store  
     **Address:** Dhaka, Bangladesh  
     **Established:** 2025  
     **Business:** Women's Clothing & Accessories  
@@ -859,7 +859,7 @@ elif page == "📊 Charts":
             st.plotly_chart(fig_sales, use_container_width=True)
 
             st.subheader("Upccoming Features")
-            '''
+            
         # ------------------- CASHBOOK -------------------
         if not cash_filtered.empty:
             st.subheader("💵 Cashbook Overview")
@@ -877,14 +877,14 @@ elif page == "📊 Charts":
 
 
         # ------------------- BANKBOOK -------------------
-        if not bank_filtered.empty:
+        if not bank_df.empty:
             st.subheader("🏦 Bankbook Overview")
-            bank_summary = bank_filtered.groupby("Payment_category").agg(
+            bank_summary = bank_df.groupby("fund_source").agg(
                 Cash_In=("Deposit_Amount", "sum"),
                 Cash_Out=("Withdrawal_Amount", "sum")
             ).reset_index()
             bank_summary["Net_Cash_Flow"] = bank_summary["Cash_In"] - bank_summary["Cash_Out"]
-            fig_bank = px.bar(bank_summary, x="Payment_category", y=["Cash_In", "Cash_Out"],
+            fig_bank = px.bar(bank_summary, x="fund_source", y=["Cash_In", "Cash_Out"],
                               barmode="group", title="Bankbook Deposit vs Withdrawal by Category")
             st.plotly_chart(fig_bank, use_container_width=True)
 
@@ -902,9 +902,9 @@ elif page == "📊 Charts":
             st.plotly_chart(fig_purchase, use_container_width=True)
 
         # ------------------- BANK TREND -------------------
-        if not bank_filtered.empty:
+        if not bank_df.empty:
             st.subheader("🏦 Bankbook Deposit vs Withdrawal Over Time")
-            bank_trend = bank_filtered.groupby("Date").agg(
+            bank_trend = bank_df.groupby("Date").agg(
                 Deposit_Amount=("Deposit_Amount", "sum"),
                 Withdrawal_Amount=("Withdrawal_Amount", "sum")
             ).reset_index()
@@ -964,9 +964,9 @@ elif page == "📊 Charts":
             fig_drill = px.bar(drill_df, x=drill, y="Total_Sales", title=f"Sales by {drill}")
             st.plotly_chart(fig_drill, use_container_width=True)
 
-            '''
+            
 elif page == "📚 About":
-    st.title("📚 About V2TAFA")
+    st.title("📚 About this app")
 
     st.markdown("""
     **V2TAFA** is a comprehensive financial management tool designed to help businesses track their sales, cash flow, bank transactions, and liabilities effectively. 
@@ -993,11 +993,37 @@ elif page == "📚 About":
     Thank you for using V2TAFA! For any issues or feature requests, please contact the development team.
     """)
 
-# Footer
-st.markdown("---")  
-st.markdown("Made with ❤️ by [Mujakkir Ahmad](https://webmujakkir.streamlit.app/)")
-st.markdown("For more information, visit [GitHub Repository](https://github.com/mujakkirdv)")
-st.markdown("Follow me on [LinkedIn](https://www.linkedin.com/in/mujakkirdv/)")
-st.markdown("© August 2025 TAFA Version: 1.1.0. All rights reserved.")
 
-st.markdown("---")
+# Add a caption (small text under content)
+st.markdown(
+    """
+    <p style='text-align:center; font-size:14px; color:gray;'>
+        Powered by Mujakkir Ahmad | Data & Analytics
+    </p>
+    """,
+    unsafe_allow_html=True
+)
+
+# Add a footer fixed at the bottom
+st.markdown(
+    """
+    <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #34c3eb;
+        color: #555;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 14px;
+        box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+    }
+    </style>
+    <div class="footer">
+        © 2025 Mujakkir Ahmad | All Rights Reserved
+    </div>
+    """,
+    unsafe_allow_html=True
+)
